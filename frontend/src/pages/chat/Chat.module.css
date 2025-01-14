@@ -84,7 +84,7 @@
   justify-content: flex-end;
   margin-bottom: 12px;
   font-style: normal;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .chatMessageUserMessage {
@@ -98,7 +98,7 @@
     0px 0px 2px rgba(0, 0, 0, 0.12);
   font-style: normal;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 22px;
   color: #242424;
   order: 0;
@@ -113,7 +113,7 @@
   max-width: 80%;
   display: flex;
   font-style: normal;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .chatMessageError {
@@ -129,14 +129,14 @@
   max-width: 800px;
   margin-bottom: 12px;
   font-style: normal;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .chatMessageErrorContent {
   font-family:'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 22px;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -158,7 +158,7 @@
   margin-top: 8px;
   font-style: normal;
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .clearChatBroom {
@@ -312,7 +312,7 @@
 .citationPanelContent {
   font-style: normal;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 20px;
   color: #000000;
   flex: none;
@@ -358,7 +358,7 @@ a {
 .viewSourceButton {
   font-style: normal;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 16px;
   color: #115ea3;
   flex-direction: row;

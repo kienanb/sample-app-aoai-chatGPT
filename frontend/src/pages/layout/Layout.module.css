@@ -5,7 +5,7 @@
 }
 
 .header {
-  background-color: #e6afd4;
+  background-color: #eccee2;
 }
 
 .headerContainer {
@@ -52,7 +52,8 @@
 .shareButtonText {
   font-style: normal;
   font-weight: 600;
-  font-size: 14px;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
   line-height: 20px;
   display: flex;
   align-items: center;
