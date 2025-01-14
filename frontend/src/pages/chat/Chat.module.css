@@ -76,12 +76,15 @@
   display: flex;
   flex-direction: column;
   margin-top: 24px;
+  font-style: normal;
 }
 
 .chatMessageUser {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 12px;
+  font-style: normal;
+  font-size: 12px;
 }
 
 .chatMessageUserMessage {
@@ -95,7 +98,7 @@
     0px 0px 2px rgba(0, 0, 0, 0.12);
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 22px;
   color: #242424;
   order: 0;
@@ -109,6 +112,8 @@
   margin-bottom: 12px;
   max-width: 80%;
   display: flex;
+  font-style: normal;
+  font-size: 12px;
 }
 
 .chatMessageError {
@@ -123,18 +128,21 @@
   flex-grow: 0;
   max-width: 800px;
   margin-bottom: 12px;
+  font-style: normal;
+  font-size: 12px;
 }
 
 .chatMessageErrorContent {
   font-family: 'Segoe UI';
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 22px;
   white-space: pre-wrap;
   word-wrap: break-word;
   gap: 12px;
   align-items: center;
+  font-style: normal;
 }
 
 .chatInput {
@@ -143,11 +151,13 @@
   padding-top: 12px;
   padding-bottom: 24px;
   padding-left: 24px;
-  padding-right: 24px;
+  padding-right: 40px;
   width: calc(100% - 100px);
   max-width: 1028px;
   margin-bottom: 50px;
   margin-top: 8px;
+  font-style: normal;
+  font-size: 12px;
 }
 
 .clearChatBroom {
@@ -225,8 +235,8 @@
   width: 103px;
   height: 20px;
   font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 400;
+  font-size: 12px;
   line-height: 20px;
   display: flex;
   align-items: center;
@@ -254,6 +264,7 @@
   max-width: 30%;
   overflow-y: scroll;
   max-height: calc(100vh - 100px);
+  font-style: normal;
 }
 
 .citationPanelHeaderContainer {
@@ -300,13 +311,14 @@
 .citationPanelContent {
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 20px;
   color: #000000;
   flex: none;
   order: 1;
   align-self: stretch;
   flex-grow: 0;
+  font-style: normal;
 }
 
 .exectResultList {
