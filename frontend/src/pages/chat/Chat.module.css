@@ -133,7 +133,7 @@
 }
 
 .chatMessageErrorContent {
-  font-family: 'Segoe UI';
+  font-family:'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -151,7 +151,7 @@
   padding-top: 12px;
   padding-bottom: 24px;
   padding-left: 24px;
-  padding-right: 40px;
+  padding-right: 24px;
   width: calc(100% - 100px);
   max-width: 1028px;
   margin-bottom: 50px;
