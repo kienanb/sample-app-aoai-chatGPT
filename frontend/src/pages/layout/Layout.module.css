@@ -1,11 +1,26 @@
 .layout {
+  display: flex; /* Change from column to row layout to position sidebar and main content side by side */
+  height: 100%; /* Ensure full height for layout */
+}
+
+.sidebar {
+  width: 250px; /* Fixed width for the sidebar */
+  background-color: #f4f4f4; /* Sidebar background color */
+  padding: 20px; /* Add padding for inner spacing */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for visual separation */
+  height: 100vh; /* Ensure the sidebar spans the full height of the viewport */
+  overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+.mainContent {
+  flex: 1; /* Allow the main content to take the remaining space */
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
 .header {
-  background-color: #eccee2;
+  background-color: #f1e6ee;
 }
 
 .headerContainer {
@@ -109,5 +124,14 @@
 
   .headerIcon {
     margin-left: 26px;
+  }
+
+  .sidebar {
+    width: 100%; /* Make the sidebar full-width on small screens */
+    height: auto; /* Adjust the height */
+  }
+
+  .layout {
+    flex-direction: column; /* Stack sidebar and main content vertically on small screens */
   }
 }
