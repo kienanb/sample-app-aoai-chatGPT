@@ -1,18 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Chat24Filled } from '@fluentui/react-icons'; // Import the Fluent UI chat bubble icon
+import { Link, useLocation } from 'react-router-dom';
+import { Chat24Filled } from '@fluentui/react-icons'; // Fluent UI chat bubble icon
 import styles from './Sidebar.module.css';
 
 const Sidebar = () => {
+  const location = useLocation(); // Get the current location
+
   return (
     <div className={styles.sidebar}>
       <ul>
         <li>
-          <Link to="/current-screen" className={styles.iconLink}>
-            <Chat24Filled className={styles.chatIcon} />
-          </Link>
+          {location.pathname === '/chat' ? (
+            // If already on /chat, render a non-interactive button
+            <button className={styles.iconButton} disabled>
+              <Chat24Filled className={styles.chatIcon} />
+            </button>
+          ) : (
+            // Navigate to /chat
+            <Link to="/chat" className={styles.iconLink}>
+              <Chat24Filled className={styles.chatIcon} />
+            </Link>
+          )}
         </li>
-        {/* Add more menu options here */}
       </ul>
     </div>
   );

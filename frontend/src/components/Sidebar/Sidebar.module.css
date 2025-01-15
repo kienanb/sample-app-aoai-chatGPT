@@ -19,7 +19,8 @@
     margin: 20px 0; /* Spacing between icons */
   }
   
-  .iconLink {
+  .iconLink,
+  .iconButton {
     text-decoration: none;
     display: flex;
     justify-content: center;
@@ -27,16 +28,22 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #3b2234; /* Icon background */
+    background-color: #3b2234; /* Default background */
     transition: background-color 0.2s ease;
+    border: none; /* For button consistency */
+    cursor: pointer;
   }
   
   .iconLink:hover {
-    background-color: #b065a3; /* Highlight on hover */
+    background-color: #b065a3; /* Highlight on hover for links */
+  }
+  
+  .iconButton {
+    cursor: default; /* Indicate that the button is not interactive */
   }
   
   .chatIcon {
-    color: #ffffff; /* White icon color */
+    color: #ffffff; /* White icon color for maximum contrast */
     font-size: 24px; /* Adjust size as needed */
   }
   
