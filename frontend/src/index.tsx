@@ -8,6 +8,8 @@ import Layout from './pages/layout/Layout';
 import NoPage from './pages/NoPage';
 import { AppStateProvider } from './state/AppProvider';
 
+import './index.css'
+
 initializeIcons();
 
 export default function App() {
