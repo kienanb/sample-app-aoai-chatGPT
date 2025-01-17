@@ -1,11 +1,11 @@
 body {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #edf5fd;
+    background-color: #f1e6ee;
 }
 
 .container {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #edf5fd;
+    background-color: #f1e6ee;
     min-height: 100vh;
     padding: 20px;
 }
@@ -21,8 +21,35 @@ body {
     left: 0;
     right: 0;
     background-color: white;
-    border-top: 1px solid #e0e0e0;
-    padding: 16px;
+    border-top: 1px solid #f1e6ee;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
     transform: translateY(0);
     transition: transform 0.3s ease-in-out;
+    z-index: 100;
+}
+
+.audioControl {
+    width: 100%;
+    height: 36px;
+}
+.audioPlayer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-top: 1px solid #f1e6ee;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+    transition: transform 0.3s ease-in-out;
+    z-index: 100;
+}
+
+.audioControl {
+    width: 100%;
+    height: 36px;
+}
+
+.audioPlayer :global(.ms-Button) {
+    margin-left: 12px;
 }

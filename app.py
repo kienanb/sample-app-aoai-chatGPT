@@ -110,6 +110,8 @@ async def get_models():
 async def generate_speech():
     try:
         request_data = await request.get_json()
+        logging.info(f"Generate speech request data: {request_data}")  # Log the incoming request
+        
         client = ElevenLabsClient()
         result = await client.generate_audio(
             text=request_data['text'],
@@ -123,14 +125,23 @@ async def generate_speech():
         )
         
         if isinstance(result, dict) and "error" in result:
+            logging.error(f"ElevenLabs API error: {result}")
             return jsonify({"error": result["error"]["message"]}), 500
             
         if result is None:
+            logging.error("No result returned from ElevenLabs API")
             return jsonify({"error": "Failed to generate audio"}), 500
             
-        return Response(result, mimetype="audio/mpeg")
+        # Log the size of the returned audio data
+        logging.info(f"Generated audio size: {len(result) if result else 0} bytes")
+        
+        response = Response(result)
+        response.headers['Content-Type'] = 'audio/mpeg'
+        response.headers['Accept-Ranges'] = 'bytes'
+        response.headers['Cache-Control'] = 'no-cache'
+        return response
     except Exception as e:
-        logging.exception("Unexpected error in generate speech endpoint")
+        logging.exception("Error in generate_speech endpoint")  # This logs the full stack trace
         return jsonify({"error": str(e)}), 500
 
 # Debug settings

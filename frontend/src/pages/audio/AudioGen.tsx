@@ -75,16 +75,34 @@ const AudioPlayer: React.FC<{ audioUrl: string; onClose: () => void }> = ({ audi
             tokens={{ padding: 20 }}
         >
             <Stack.Item grow>
-                <audio controls>
+                <audio 
+                    controls 
+                    className={styles.audioControl}
+                >
                     <source src={audioUrl} type="audio/mpeg" />
                 </audio>
             </Stack.Item>
-            <DefaultButton
-                iconProps={{ iconName: 'Download' }}
-                href={audioUrl}
-                download="generated-speech.mp3"
-                onRenderIcon={() => <ArrowDownload20Regular />}
-            />
+            <Stack.Item>
+                <DefaultButton
+                    href={audioUrl}
+                    download="generated-speech.mp3"
+                    iconProps={{ 
+                        iconName: 'Download',
+                        styles: { root: { color: 'inherit' } }
+                    }}
+                    styles={{
+                        root: {
+                            backgroundColor: 'transparent',
+                            border: 'none',
+                            minWidth: '32px',
+                            padding: '6px'
+                        },
+                        rootHovered: {
+                            backgroundColor: '#f3f2f1'
+                        }
+                    }}
+                />
+            </Stack.Item>
         </Stack>
     );
 };
@@ -102,6 +120,7 @@ const AudioGen: React.FC = () => {
     const [speakerBoost, setSpeakerBoost] = useState<boolean>(true);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
     const [audioUrl, setAudioUrl] = useState<string>('');
+    const showLanguageSelector = selectedModel === 'eleven_turbo_v2_5';
 
     useEffect(() => {
         fetchVoices();
@@ -148,24 +167,30 @@ const AudioGen: React.FC = () => {
 
     const generateSpeech = async () => {
         if (!text || !selectedVoice || !selectedModel) return;
-
+    
         setIsGenerating(true);
         try {
+            const payload: any = {
+                text,
+                voice_id: selectedVoice,
+                model_id: selectedModel,
+                stability,
+                similarity_boost: similarity,
+                style: styleExaggeration,
+                use_speaker_boost: speakerBoost,
+            };
+    
+            // Only add language_code if using the turbo model
+            if (selectedModel === 'eleven_turbo_v2_5' && selectedLanguage) {
+                payload.language_code = selectedLanguage;
+            }
+    
             const response = await fetch('/api/generate-speech', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    text,
-                    voice_id: selectedVoice,
-                    model_id: selectedModel,
-                    language_code: selectedLanguage,
-                    stability,
-                    similarity_boost: similarity,
-                    style: styleExaggeration,
-                    use_speaker_boost: speakerBoost,
-                }),
+                body: JSON.stringify(payload),
             });
 
             const blob = await response.blob();
@@ -205,7 +230,7 @@ const AudioGen: React.FC = () => {
                         placeholder="Select Model"
                     />
 
-                    {selectedModel && (
+                    {selectedModel && showLanguageSelector && (
                         <Dropdown
                             label="Language"
                             selectedKey={selectedLanguage}
