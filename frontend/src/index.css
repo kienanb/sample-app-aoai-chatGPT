@@ -20,7 +20,7 @@ html {
   height: 100%;
 }
 
-/* Apply globally to Fluent UI components */
+/* Apply globally to Fluent UI components with font-weight */
 .ms-TextField,
 .ms-Label,
 .ms-Dropdown-container,
@@ -28,9 +28,10 @@ html {
 .ms-Toggle,
 .ms-Button {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 400; /* Set font-weight globally */
 }
 
-/* Ensure text inputs also inherit the font */
 .ms-TextField textarea {
     font-family: inherit;
+    font-weight: 400; /* Ensure consistent font weight in text areas */
 }
