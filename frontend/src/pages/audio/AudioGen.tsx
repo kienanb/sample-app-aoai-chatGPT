@@ -64,10 +64,20 @@ const rightPanelStyles: IStackStyles = {
 
 // Audio Player Component
 const AudioPlayer: React.FC<{ audioUrl: string; onClose: () => void }> = ({ audioUrl, onClose }) => {
+    const audioRef = useRef<HTMLAudioElement>(null);
+
+    // Reset the audio player when audioUrl changes
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.pause(); // Stop any current playback
+            audioRef.current.load(); // Reload the new audio source
+        }
+    }, [audioUrl]);
+
     if (!audioUrl) return null;
 
     return (
-        <Stack 
+        <Stack
             className={styles.audioPlayer}
             horizontal
             horizontalAlign="space-between"
@@ -75,10 +85,7 @@ const AudioPlayer: React.FC<{ audioUrl: string; onClose: () => void }> = ({ audi
             tokens={{ padding: 20 }}
         >
             <Stack.Item grow>
-                <audio 
-                    controls 
-                    className={styles.audioControl}
-                >
+                <audio ref={audioRef} controls className={styles.audioControl}>
                     <source src={audioUrl} type="audio/mpeg" />
                 </audio>
             </Stack.Item>
@@ -86,7 +93,7 @@ const AudioPlayer: React.FC<{ audioUrl: string; onClose: () => void }> = ({ audi
                 <DefaultButton
                     href={audioUrl}
                     download="generated-speech.mp3"
-                    iconProps={{ 
+                    iconProps={{
                         iconName: 'Download',
                         styles: { root: { color: 'inherit' } }
                     }}
@@ -106,6 +113,7 @@ const AudioPlayer: React.FC<{ audioUrl: string; onClose: () => void }> = ({ audi
         </Stack>
     );
 };
+
 
 const AudioGen: React.FC = () => {
     const [text, setText] = useState('');
