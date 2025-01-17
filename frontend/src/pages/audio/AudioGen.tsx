@@ -112,9 +112,11 @@ const AudioGen: React.FC = () => {
         try {
             const response = await fetch('/api/voices');
             const data = await response.json();
-            setVoices(data);
+            // Extract the voices array from the response
+            setVoices(data.voices || []);
         } catch (error) {
             console.error('Error fetching voices:', error);
+            setVoices([]);
         }
     };
 
