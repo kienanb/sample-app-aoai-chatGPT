@@ -43,13 +43,10 @@ bp = Blueprint("routes", __name__, static_folder="static", template_folder="stat
 
 cosmos_db_ready = asyncio.Event()
 
-audio_bp = Blueprint('audio', __name__)
-
 
 def create_app():
     app = Quart(__name__)
     app.register_blueprint(bp)  # Your existing blueprint
-    app.register_blueprint(audio_bp)  # Register the new audio blueprint
     app.config["TEMPLATES_AUTO_RELOAD"] = True
     
     @app.before_serving
@@ -83,23 +80,33 @@ async def favicon():
 async def assets(path):
     return await send_from_directory("static/assets", path)
 
-@audio_bp.route('/api/voices', methods=['GET'])
+@bp.route('/api/voices', methods=['GET'])
 async def get_voices():
-    client = ElevenLabsClient()
-    result = await client.get_voices()
-    if result is None or "error" in result:
-        return jsonify({"error": "Failed to fetch voices"}), 500
-    return jsonify(result)
+    logging.info("Voices endpoint called")
+    try:
+        client = ElevenLabsClient()
+        result = await client.get_voices()
+        if result is None or "error" in result:
+            return jsonify({"error": "Failed to fetch voices"}), 500
+        return jsonify(result)
+    except Exception as e:
+        logging.exception("Unexpected error in voices endpoint")
+        return jsonify({"error": str(e)}), 500
 
-@audio_bp.route('/api/models', methods=['GET'])
+@bp.route('/api/models', methods=['GET'])
 async def get_models():
-    client = ElevenLabsClient()
-    result = await client.get_models()
-    if result is None or "error" in result:
-        return jsonify({"error": "Failed to fetch models"}), 500
-    return jsonify(result)
+    logging.info("Models endpoint called")
+    try:
+        client = ElevenLabsClient()
+        result = await client.get_models()
+        if result is None or "error" in result:
+            return jsonify({"error": "Failed to fetch models"}), 500
+        return jsonify(result)
+    except Exception as e:
+        logging.exception("Unexpected error in models endpoint")
+        return jsonify({"error": str(e)}), 500
 
-@audio_bp.route('/api/generate-speech', methods=['POST'])
+@bp.route('/api/generate-speech', methods=['POST'])
 async def generate_speech():
     try:
         request_data = await request.get_json()
@@ -123,6 +130,7 @@ async def generate_speech():
             
         return Response(result, mimetype="audio/mpeg")
     except Exception as e:
+        logging.exception("Unexpected error in generate speech endpoint")
         return jsonify({"error": str(e)}), 500
 
 # Debug settings

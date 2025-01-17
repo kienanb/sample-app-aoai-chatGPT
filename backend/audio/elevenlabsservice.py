@@ -12,8 +12,10 @@ class ElevenLabsError(Exception):
 
 class ElevenLabsClient:
     def __init__(self):
+        if not app_settings.elevenlabs.key:
+            raise ValueError("ElevenLabs API key not configured")
         self.api_key = app_settings.elevenlabs.key
-        self.endpoint = app_settings.elevenlabs.endpoint.rstrip('/')
+        self.endpoint = (app_settings.elevenlabs.endpoint or "https://api.elevenlabs.io/v1").rstrip('/')
 
     def _get_headers(self, content_type: str = "application/json", accept: Optional[str] = None) -> Dict[str, str]:
         headers = {

@@ -100,8 +100,14 @@ class _ElevenLabsSettings(BaseSettings):
         env_ignore_empty=True
     )
     
-    key: Optional[str] = None
-    endpoint: Optional[str] = "https://api.elevenlabs.io/v1/"
+    key: str  # Make this required
+    endpoint: str = "https://api.elevenlabs.io/v1"  # Remove trailing slash
+    
+    @model_validator(mode="after")
+    def validate_settings(self) -> Self:
+        if not self.key:
+            raise ValueError("ELEVENLABS_KEY is required")
+        return self
     
 
 class _AzureOpenAISettings(BaseSettings):
