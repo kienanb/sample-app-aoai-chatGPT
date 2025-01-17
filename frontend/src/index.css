@@ -26,6 +26,8 @@ html {
 .ms-Dropdown-container,
 .ms-Slider,
 .ms-Toggle,
+.ms-Dropdown-label,
+.ms-Dropdown-title,
 .ms-Button {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-weight: 400; /* Set font-weight globally */
