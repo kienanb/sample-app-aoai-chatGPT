@@ -91,6 +91,17 @@ class _AzureOpenAIFunction(BaseModel):
 class _AzureOpenAITool(BaseModel):
     type: Literal['function'] = 'function'
     function: _AzureOpenAIFunction
+
+class _ElevenLabsSettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_prefix="ELEVENLABS_",
+        env_file=DOTENV_PATH,
+        extra='ignore',
+        env_ignore_empty=True
+    )
+    
+    key: Optional[str] = None
+    endpoint: Optional[str] = "https://api.elevenlabs.io/v1/"
     
 
 class _AzureOpenAISettings(BaseSettings):
@@ -761,6 +772,7 @@ class _BaseSettings(BaseSettings):
 class _AppSettings(BaseModel):
     base_settings: _BaseSettings = _BaseSettings()
     azure_openai: _AzureOpenAISettings = _AzureOpenAISettings()
+    elevenlabs: _ElevenLabsSettings = _ElevenLabsSettings()
     search: _SearchCommonSettings = _SearchCommonSettings()
     ui: Optional[_UiSettings] = _UiSettings()
     

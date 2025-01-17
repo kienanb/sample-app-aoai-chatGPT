@@ -14,6 +14,7 @@ from quart import (
     send_from_directory,
     render_template,
     current_app,
+    Response
 )
 
 from openai import AsyncAzureOpenAI
@@ -21,7 +22,9 @@ from azure.identity.aio import (
     DefaultAzureCredential,
     get_bearer_token_provider
 )
+
 from backend.auth.auth_utils import get_authenticated_user_details
+from backend.audio.elevenlabsservice import ElevenLabsClient
 from backend.security.ms_defender_utils import get_msdefender_user_json
 from backend.history.cosmosdbservice import CosmosConversationClient
 from backend.settings import (
@@ -40,10 +43,13 @@ bp = Blueprint("routes", __name__, static_folder="static", template_folder="stat
 
 cosmos_db_ready = asyncio.Event()
 
+audio_bp = Blueprint('audio', __name__)
+
 
 def create_app():
     app = Quart(__name__)
-    app.register_blueprint(bp)
+    app.register_blueprint(bp)  # Your existing blueprint
+    app.register_blueprint(audio_bp)  # Register the new audio blueprint
     app.config["TEMPLATES_AUTO_RELOAD"] = True
     
     @app.before_serving
@@ -77,6 +83,47 @@ async def favicon():
 async def assets(path):
     return await send_from_directory("static/assets", path)
 
+@audio_bp.route('/api/voices', methods=['GET'])
+async def get_voices():
+    client = ElevenLabsClient()
+    result = await client.get_voices()
+    if result is None or "error" in result:
+        return jsonify({"error": "Failed to fetch voices"}), 500
+    return jsonify(result)
+
+@audio_bp.route('/api/models', methods=['GET'])
+async def get_models():
+    client = ElevenLabsClient()
+    result = await client.get_models()
+    if result is None or "error" in result:
+        return jsonify({"error": "Failed to fetch models"}), 500
+    return jsonify(result)
+
+@audio_bp.route('/api/generate-speech', methods=['POST'])
+async def generate_speech():
+    try:
+        request_data = await request.get_json()
+        client = ElevenLabsClient()
+        result = await client.generate_audio(
+            text=request_data['text'],
+            model_id=request_data['model_id'],
+            voice_id=request_data['voice_id'],
+            stability=request_data['stability'],
+            similarity_boost=request_data['similarity_boost'],
+            style=request_data['style'],
+            use_speaker_boost=request_data['use_speaker_boost'],
+            language_code=request_data.get('language_code')
+        )
+        
+        if isinstance(result, dict) and "error" in result:
+            return jsonify({"error": result["error"]["message"]}), 500
+            
+        if result is None:
+            return jsonify({"error": "Failed to generate audio"}), 500
+            
+        return Response(result, mimetype="audio/mpeg")
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Debug settings
 DEBUG = os.environ.get("DEBUG", "false")

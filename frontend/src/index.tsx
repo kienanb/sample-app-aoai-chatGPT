@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { HashRouter, Route, Routes, Navigate } from 'react-router-dom'; // Import Navigate
+import { HashRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { initializeIcons } from '@fluentui/react';
 
 import Chat from './pages/chat/Chat';
+import AudioGen from './pages/audio/AudioGen'; // Add this import
 import Layout from './pages/layout/Layout';
 import NoPage from './pages/NoPage';
 import { AppStateProvider } from './state/AppProvider';
@@ -18,9 +19,10 @@ export default function App() {
       <HashRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Navigate to="/chat" replace />} /> {/* Redirect to /chat */}
-            <Route path="chat" element={<Chat />} /> {/* Chat screen at /chat */}
-            <Route path="*" element={<NoPage />} /> {/* Catch-all route */}
+            <Route index element={<Navigate to="/chat" replace />} />
+            <Route path="chat" element={<Chat />} />
+            <Route path="audio" element={<AudioGen />} /> {/* Add this route */}
+            <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>
       </HashRouter>

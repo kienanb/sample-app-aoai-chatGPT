@@ -34,7 +34,7 @@
     cursor: pointer;
   }
   
-  .iconLink:hover {
+  .iconLink:hover { 
     background-color: #b065a3; /* Highlight on hover for links */
   }
   
