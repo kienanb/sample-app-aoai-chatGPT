@@ -218,14 +218,14 @@ const AudioGen: React.FC = () => {
                     <div className={styles.roundedContainer}>
                         <TextField
                             multiline
-                            autoAdjustHeight={false} // Disable auto-height to let the container control the height
+                            autoAdjustHeight={false} // Ensure it doesn't auto-resize
                             value={text}
                             onChange={(_, newValue) => setText(newValue || '')}
                             placeholder="Enter text to convert to speech..."
                             styles={{
                                 root: { height: '100%', border: 'none', boxShadow: 'none' },
-                                fieldGroup: { background: 'transparent', border: 'none', height: '100%' },
-                                field: { height: '100%', padding: '10px' },
+                                fieldGroup: { height: '100%', background: 'transparent', border: 'none' },
+                                field: { height: '100%', padding: '10px', overflow: 'hidden' },
                             }}
                         />
                     </div>
@@ -313,7 +313,7 @@ const AudioGen: React.FC = () => {
                 </span>
                 <DefaultButton
                     primary
-                    text={isGenerating ? 'Generating...' : 'Generate speech'}
+                    text={isGenerating ? 'Generating...' : 'Generate Speech'}
                     onClick={generateSpeech}
                     disabled={isGenerating || !text || !selectedVoice || !selectedModel}
                 />

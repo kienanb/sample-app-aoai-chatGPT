@@ -80,6 +80,54 @@ async def favicon():
 async def assets(path):
     return await send_from_directory("static/assets", path)
 
+@bp.route('/api/dalle/generate-images', methods=['POST'])
+async def generate_image():
+    """
+    Route to handle image generation requests.
+    Expects JSON payload with 'prompt', 'size', 'style', and 'quality'.
+    """
+    logging.info("Image generation endpoint called")
+    try:
+        # Parse the incoming JSON request
+        data = await request.json
+        prompt = data.get("prompt")
+        size = data.get("size", "1024x1024")
+        style = data.get("style", "vivid")
+        quality = data.get("quality", "standard")
+
+        # Validate required fields
+        if not prompt:
+            logging.error("Prompt is required")
+            return jsonify({"error": "Prompt is required"}), 400
+
+        # Instantiate the DalleClient
+        client = DalleClient()
+
+        # Call the DalleClient to generate the image
+        result = await client.generate_images(
+            prompt=prompt,
+            size=size,
+            style=style,
+            quality=quality
+        )
+
+        # Handle response
+        if isinstance(result, dict) and "error" in result:
+            logging.error(f"Error generating image: {result['error']}")
+            return jsonify({"error": result['error']}), 500
+
+        # Parse the URL of the first image
+        image_url = result.get("data", [{}])[0].get("url")
+        if not image_url:
+            logging.error("Image URL not found in DALL-E response")
+            return jsonify({"error": "Image URL not found in response"}), 500
+
+        return jsonify({"image_url": image_url}), 200
+
+    except Exception as e:
+        logging.exception("Unexpected error in image generation endpoint")
+        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+
 @bp.route('/api/voices', methods=['GET'])
 async def get_voices():
     logging.info("Voices endpoint called")

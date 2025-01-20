@@ -4,12 +4,13 @@ import { HashRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { initializeIcons } from '@fluentui/react';
 
 import Chat from './pages/chat/Chat';
-import AudioGen from './pages/audio/AudioGen'; // Add this import
+import AudioGen from './pages/audio/AudioGen';
+import ImageGen from './pages/image/ImageGen'; // Add this import
 import Layout from './pages/layout/Layout';
 import NoPage from './pages/NoPage';
 import { AppStateProvider } from './state/AppProvider';
 
-import './index.css'
+import './index.css';
 
 initializeIcons();
 
@@ -21,7 +22,8 @@ export default function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to="/chat" replace />} />
             <Route path="chat" element={<Chat />} />
-            <Route path="audio" element={<AudioGen />} /> {/* Add this route */}
+            <Route path="image" element={<ImageGen />} /> {/* Add this route */}
+            <Route path="audio" element={<AudioGen />} />
             <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>

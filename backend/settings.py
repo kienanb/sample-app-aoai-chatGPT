@@ -109,7 +109,24 @@ class _ElevenLabsSettings(BaseSettings):
             raise ValueError("ELEVENLABS_KEY is required")
         return self
     
-
+class DalleSettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_prefix="DALLE_",
+        env_file=DOTENV_PATH,
+        extra='ignore',
+        env_ignore_empty=True
+    )
+    
+    key: str  # Make this required
+    endpoint: str = "https://api.openai.com/v1"  # Remove trailing slash
+    generation_model_name: str
+    
+    @model_validator(mode="after")
+    def validate_settings(self) -> Self:
+        if not self.key:
+            raise ValueError("DALLE_KEY is required")
+        return self
+    
 class _AzureOpenAISettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="AZURE_OPENAI_",
