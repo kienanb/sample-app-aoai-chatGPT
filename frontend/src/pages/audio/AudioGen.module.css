@@ -81,13 +81,13 @@ body {
 
 /* Matches the height of the settings box */
 .roundedContainer {
+    height: 100%; /* Ensures it fills the available space */
+    display: flex; /* Flexbox layout for inner content */
+    flex-direction: column; /* Ensure vertical layout */
     background: radial-gradient(108.78% 108.78% at 50.02% 19.78%, #ffffff 57.29%, #eef6fe 100%);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 0px 2px rgba(0, 0, 0, 0.12);
     border-radius: 8px;
     overflow: hidden;
-    height: 600px; /* Same height as the settings panel */
-    display: flex;
-    flex-direction: column;
 }
 
 /* Ensure the TextField's internal structure respects the container height */

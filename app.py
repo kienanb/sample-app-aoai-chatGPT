@@ -25,6 +25,7 @@ from azure.identity.aio import (
 
 from backend.auth.auth_utils import get_authenticated_user_details
 from backend.audio.elevenlabsservice import ElevenLabsClient
+from backend.image.dalleservice import DalleClient
 from backend.security.ms_defender_utils import get_msdefender_user_json
 from backend.history.cosmosdbservice import CosmosConversationClient
 from backend.settings import (
@@ -127,6 +128,19 @@ async def generate_image():
     except Exception as e:
         logging.exception("Unexpected error in image generation endpoint")
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+    
+@bp.route('/api/dalle/model', methods=['GET'])
+async def get_dalle_model():
+    """
+    Endpoint to return the DALL-E model name from settings.
+    """
+    try:
+        client = DalleClient()
+        model_name = client.generation_model_name
+        return jsonify({"model_name": model_name}), 200
+    except Exception as e:
+        logging.exception("Unexpected error fetching DALL-E model name")
+        return jsonify({"error": str(e)}), 500
 
 @bp.route('/api/voices', methods=['GET'])
 async def get_voices():

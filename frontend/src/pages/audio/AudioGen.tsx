@@ -214,18 +214,18 @@ const AudioGen: React.FC = () => {
         <Stack className={styles.container} tokens={stackTokens}>
             <Stack horizontal tokens={{ childrenGap: 20 }}>
                 {/* Left Column - Text Input */}
-                <Stack.Item grow>
+                <Stack.Item grow styles={{ root: { height: '100%' } }}>
                     <div className={styles.roundedContainer}>
                         <TextField
                             multiline
-                            autoAdjustHeight={false} // Ensure it doesn't auto-resize
+                            autoAdjustHeight={false}
                             value={text}
                             onChange={(_, newValue) => setText(newValue || '')}
                             placeholder="Enter text to convert to speech..."
                             styles={{
-                                root: { height: '100%', border: 'none', boxShadow: 'none' },
-                                fieldGroup: { height: '100%', background: 'transparent', border: 'none' },
-                                field: { height: '100%', padding: '10px', overflow: 'hidden' },
+                                root: { height: '100%', display: 'flex', flexDirection: 'column' },
+                                fieldGroup: { height: '100%', flex: 1, background: 'transparent', border: 'none' },
+                                field: { height: '100%', flex: 1, padding: '10px', overflow: 'hidden' },
                             }}
                         />
                     </div>
