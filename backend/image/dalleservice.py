@@ -3,6 +3,13 @@ from typing import Optional, Dict, Any, Union
 from backend.settings import app_settings
 from aiohttp import ClientError
 
+class DalleError(Exception):
+    """Custom exception for Dalle API errors"""
+    def __init__(self, message: str, status_code: Optional[int] = None):
+        self.message = message
+        self.status_code = status_code
+        super().__init__(self.message)
+
 class DalleClient:
     def __init__(self):
         if not app_settings.dalle.key:

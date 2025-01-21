@@ -109,7 +109,7 @@ class _ElevenLabsSettings(BaseSettings):
             raise ValueError("ELEVENLABS_KEY is required")
         return self
     
-class DalleSettings(BaseSettings):
+class _DalleSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="DALLE_",
         env_file=DOTENV_PATH,
@@ -796,6 +796,7 @@ class _AppSettings(BaseModel):
     base_settings: _BaseSettings = _BaseSettings()
     azure_openai: _AzureOpenAISettings = _AzureOpenAISettings()
     elevenlabs: _ElevenLabsSettings = _ElevenLabsSettings()
+    dalle: _DalleSettings = _DalleSettings()
     search: _SearchCommonSettings = _SearchCommonSettings()
     ui: Optional[_UiSettings] = _UiSettings()
     
