@@ -24,8 +24,8 @@ from azure.identity.aio import (
 )
 
 from backend.auth.auth_utils import get_authenticated_user_details
+from backend.imagegen.dalleservice import DalleClient
 from backend.audio.elevenlabsservice import ElevenLabsClient
-from backend.image.dalleservice import DalleClient
 from backend.security.ms_defender_utils import get_msdefender_user_json
 from backend.history.cosmosdbservice import CosmosConversationClient
 from backend.settings import (
@@ -80,67 +80,6 @@ async def favicon():
 @bp.route("/assets/<path:path>")
 async def assets(path):
     return await send_from_directory("static/assets", path)
-
-@bp.route('/api/dalle/generate-images', methods=['POST'])
-async def generate_image():
-    """
-    Route to handle image generation requests.
-    Expects JSON payload with 'prompt', 'size', 'style', and 'quality'.
-    """
-    logging.info("Image generation endpoint called")
-    try:
-        # Parse the incoming JSON request
-        data = await request.json
-        prompt = data.get("prompt")
-        size = data.get("size", "1024x1024")
-        style = data.get("style", "vivid")
-        quality = data.get("quality", "standard")
-
-        # Validate required fields
-        if not prompt:
-            logging.error("Prompt is required")
-            return jsonify({"error": "Prompt is required"}), 400
-
-        # Instantiate the DalleClient
-        client = DalleClient()
-
-        # Call the DalleClient to generate the image
-        result = await client.generate_images(
-            prompt=prompt,
-            size=size,
-            style=style,
-            quality=quality
-        )
-
-        # Handle response
-        if isinstance(result, dict) and "error" in result:
-            logging.error(f"Error generating image: {result['error']}")
-            return jsonify({"error": result['error']}), 500
-
-        # Parse the URL of the first image
-        image_url = result.get("data", [{}])[0].get("url")
-        if not image_url:
-            logging.error("Image URL not found in DALL-E response")
-            return jsonify({"error": "Image URL not found in response"}), 500
-
-        return jsonify({"image_url": image_url}), 200
-
-    except Exception as e:
-        logging.exception("Unexpected error in image generation endpoint")
-        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
-    
-@bp.route('/api/dalle/model', methods=['GET'])
-async def get_dalle_model():
-    """
-    Endpoint to return the DALL-E model name from settings.
-    """
-    try:
-        client = DalleClient()
-        model_name = client.generation_model_name
-        return jsonify({"model_name": model_name}), 200
-    except Exception as e:
-        logging.exception("Unexpected error fetching DALL-E model name")
-        return jsonify({"error": str(e)}), 500
 
 @bp.route('/api/voices', methods=['GET'])
 async def get_voices():
@@ -204,6 +143,67 @@ async def generate_speech():
         return response
     except Exception as e:
         logging.exception("Error in generate_speech endpoint")  # This logs the full stack trace
+        return jsonify({"error": str(e)}), 500
+    
+@bp.route('/api/dalle/generate-images', methods=['POST'])
+async def generate_image():
+    """
+    Route to handle image generation requests.
+    Expects JSON payload with 'prompt', 'size', 'style', and 'quality'.
+    """
+    logging.info("Image generation endpoint called")
+    try:
+        # Parse the incoming JSON request
+        data = await request.json
+        prompt = data.get("prompt")
+        size = data.get("size", "1024x1024")
+        style = data.get("style", "vivid")
+        quality = data.get("quality", "standard")
+
+        # Validate required fields
+        if not prompt:
+            logging.error("Prompt is required")
+            return jsonify({"error": "Prompt is required"}), 400
+
+        # Instantiate the DalleClient
+        client = DalleClient()
+
+        # Call the DalleClient to generate the image
+        result = await client.generate_images(
+            prompt=prompt,
+            size=size,
+            style=style,
+            quality=quality
+        )
+
+        # Handle response
+        if isinstance(result, dict) and "error" in result:
+            logging.error(f"Error generating image: {result['error']}")
+            return jsonify({"error": result['error']}), 500
+
+        # Parse the URL of the first image
+        image_url = result.get("data", [{}])[0].get("url")
+        if not image_url:
+            logging.error("Image URL not found in DALL-E response")
+            return jsonify({"error": "Image URL not found in response"}), 500
+
+        return jsonify({"image_url": image_url}), 200
+
+    except Exception as e:
+        logging.exception("Unexpected error in image generation endpoint")
+        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+    
+@bp.route('/api/dalle/model', methods=['GET'])
+async def get_dalle_model():
+    """
+    Endpoint to return the DALL-E model name from settings.
+    """
+    try:
+        client = DalleClient()
+        model_name = client.generation_model_name
+        return jsonify({"model_name": model_name}), 200
+    except Exception as e:
+        logging.exception("Unexpected error fetching DALL-E model name")
         return jsonify({"error": str(e)}), 500
 
 # Debug settings

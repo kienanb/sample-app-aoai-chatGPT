@@ -64,6 +64,6 @@ class DalleClient:
             async with aiohttp.ClientSession() as session:
                 async with session.post(url, headers=headers, json=payload) as response:
                     response.raise_for_status()
-                    return await response.read()
+                    return await response.json()
         except ClientError as e:
             return self._handle_error(e, "generating image")
