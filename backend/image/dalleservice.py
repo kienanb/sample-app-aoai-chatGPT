@@ -15,12 +15,12 @@ class DalleClient:
         if not app_settings.dalle.key:
             raise ValueError("DALL-E API key not configured")
         self.api_key = app_settings.dalle.key
-        self.endpoint = (app_settings.dalle.endpoint).rstrip('/')
+        self.endpoint = (app_settings.dalle.endpoint or "https://api.openai.com/v1").rstrip('/')
         self.generation_model_name = app_settings.dalle.generation_model_name
 
     def _get_headers(self, content_type: str = "application/json", accept: Optional[str] = None) -> Dict[str, str]:
         headers = {
-            "api-key": self.api_key,
+            "Authorization": f"Bearer {self.api_key}",
             "Content-Type": content_type,
         }
         return headers
