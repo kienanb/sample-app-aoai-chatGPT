@@ -44,7 +44,7 @@ class DalleClient:
         quality: Optional[str] = None,
         style: Optional[str] = None,
         image_count: int = 1
-    ):
+    ) -> Union[bytes, Dict[str, Any]]:
         url = f"{self.endpoint}/images/generations"
         headers = self._get_headers()
         
