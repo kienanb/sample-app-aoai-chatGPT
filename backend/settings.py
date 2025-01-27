@@ -109,6 +109,7 @@ class _ElevenLabsSettings(BaseSettings):
             raise ValueError("ELEVENLABS_KEY is required")
         return self
     
+<<<<<<< HEAD
 class _DalleSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="DALLE_",
@@ -127,6 +128,9 @@ class _DalleSettings(BaseSettings):
             raise ValueError("DALLE_KEY is required")
         return self
     
+=======
+
+>>>>>>> parent of 644c585 (Image module initiation)
 class _AzureOpenAISettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="AZURE_OPENAI_",

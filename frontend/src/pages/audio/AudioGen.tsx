@@ -218,14 +218,24 @@ const AudioGen: React.FC = () => {
                     <div className={styles.roundedContainer}>
                         <TextField
                             multiline
+<<<<<<< HEAD
                             autoAdjustHeight={false}
+=======
+                            autoAdjustHeight={false} // Disable auto-height to let the container control the height
+>>>>>>> parent of 644c585 (Image module initiation)
                             value={text}
                             onChange={(_, newValue) => setText(newValue || '')}
                             placeholder="Enter text to convert to speech..."
                             styles={{
+<<<<<<< HEAD
                                 root: { height: '100%', display: 'flex', flexDirection: 'column' },
                                 fieldGroup: { height: '100%', flex: 1, background: 'transparent', border: 'none' },
                                 field: { height: '100%', flex: 1, padding: '10px', overflow: 'hidden' },
+=======
+                                root: { height: '100%', border: 'none', boxShadow: 'none' },
+                                fieldGroup: { background: 'transparent', border: 'none', height: '100%' },
+                                field: { height: '100%', padding: '10px' },
+>>>>>>> parent of 644c585 (Image module initiation)
                             }}
                         />
                     </div>
@@ -313,7 +323,7 @@ const AudioGen: React.FC = () => {
                 </span>
                 <DefaultButton
                     primary
-                    text={isGenerating ? 'Generating...' : 'Generate Speech'}
+                    text={isGenerating ? 'Generating...' : 'Generate speech'}
                     onClick={generateSpeech}
                     disabled={isGenerating || !text || !selectedVoice || !selectedModel}
                 />
