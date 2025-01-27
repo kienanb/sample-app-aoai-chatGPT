@@ -3,13 +3,6 @@ body {
     background-color: #f1e6ee;
 }
 
-.container {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #f1e6ee;
-    min-height: 100vh;
-    padding: 20px;
-}
-
 .characterCount {
     color: #666;
     font-size: 14px;
@@ -79,37 +72,44 @@ body {
     box-shadow: none; /* Remove inner shadows if any */
 }
 
-/* Matches the height of the settings box */
 .roundedContainer {
-    height: 100%; /* Ensures it fills the available space */
-    display: flex; /* Flexbox layout for inner content */
-    flex-direction: column; /* Ensure vertical layout */
+    position: relative;
+    height: 100%;
+    width: 100%;
     background: radial-gradient(108.78% 108.78% at 50.02% 19.78%, #ffffff 57.29%, #eef6fe 100%);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 0px 2px rgba(0, 0, 0, 0.12);
-<<<<<<< HEAD
     border-radius: 8px;
     overflow: hidden;
-=======
-    border-radius: 8px; /* Makes the container rounded */
-    overflow: hidden; /* Prevents overflow issues */
-    height: 600px; /* Match the height of the settings panel */
-    display: flex;
-    flex-direction: column; /* Ensures the textbox takes up space vertically */
->>>>>>> parent of 644c585 (Image module initiation)
 }
 
-/* Ensure the TextField inside the container fits properly */
-.roundedContainer .ms-TextField {
-    flex: 1; /* Makes the TextField fill the container */
-    height: 100%; /* Ensures it respects the container height */
+.roundedContainer :global(.ms-TextField) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
-.roundedContainer .ms-TextField textarea {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-weight: 400;
+.roundedContainer :global(.ms-TextField-wrapper) {
+    height: 100%;
+}
+
+.roundedContainer :global(.ms-TextField-fieldGroup) {
+    height: 100%;
+}
+
+.roundedContainer :global(.ms-TextField-fieldGroup:focus-within) {
     border: none;
     outline: none;
+}
+
+.roundedContainer :global(.ms-TextField-field) {
+    height: 100% !important;
+    min-height: 100% !important;
+    padding: 20px;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    border: none;
     background: transparent;
-    resize: none; /* Prevent resizing */
-    height: 100%; /* Makes the textarea fill the available height */
+    resize: none;
+    box-sizing: border-box;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Chat24Filled, SpeakerEdit24Regular } from '@fluentui/react-icons';
+import { Chat24Filled, SpeakerEdit24Regular, Image24Regular } from '@fluentui/react-icons';
 import styles from './Sidebar.module.css';
 
 const Sidebar = () => {
@@ -11,7 +11,7 @@ const Sidebar = () => {
       <ul>
         <li>
           {location.pathname === '/chat' ? (
-            <button className={styles.iconButton} disabled>
+            <button className={`${styles.iconButton} ${styles.activeIconButton}`} disabled>
               <Chat24Filled className={styles.chatIcon} />
             </button>
           ) : (
@@ -21,8 +21,19 @@ const Sidebar = () => {
           )}
         </li>
         <li>
+          {location.pathname === '/image' ? (
+            <button className={`${styles.iconButton} ${styles.activeIconButton}`} disabled>
+              <Image24Regular className={styles.chatIcon} />
+            </button>
+          ) : (
+            <Link to="/image" className={styles.iconLink}>
+              <Image24Regular className={styles.chatIcon} />
+            </Link>
+          )}
+        </li>
+        <li>
           {location.pathname === '/audio' ? (
-            <button className={styles.iconButton} disabled>
+            <button className={`${styles.iconButton} ${styles.activeIconButton}`} disabled>
               <SpeakerEdit24Regular className={styles.chatIcon} />
             </button>
           ) : (

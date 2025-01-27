@@ -212,35 +212,58 @@ const AudioGen: React.FC = () => {
 
     return (
         <Stack className={styles.container} tokens={stackTokens}>
-            <Stack horizontal tokens={{ childrenGap: 20 }}>
+            <Stack 
+                horizontal 
+                styles={{ 
+                    root: { 
+                        height: 'calc(100vh - 140px)', 
+                        width: '100%',
+                        position: 'relative'
+                    } 
+                }} 
+                tokens={{ childrenGap: 20 }}
+            >
                 {/* Left Column - Text Input */}
                 <Stack.Item grow styles={{ root: { height: '100%' } }}>
                     <div className={styles.roundedContainer}>
                         <TextField
                             multiline
-<<<<<<< HEAD
                             autoAdjustHeight={false}
-=======
-                            autoAdjustHeight={false} // Disable auto-height to let the container control the height
->>>>>>> parent of 644c585 (Image module initiation)
                             value={text}
                             onChange={(_, newValue) => setText(newValue || '')}
                             placeholder="Enter text to convert to speech..."
                             styles={{
-<<<<<<< HEAD
-                                root: { height: '100%', display: 'flex', flexDirection: 'column' },
-                                fieldGroup: { height: '100%', flex: 1, background: 'transparent', border: 'none' },
-                                field: { height: '100%', flex: 1, padding: '10px', overflow: 'hidden' },
-=======
-                                root: { height: '100%', border: 'none', boxShadow: 'none' },
-                                fieldGroup: { background: 'transparent', border: 'none', height: '100%' },
-                                field: { height: '100%', padding: '10px' },
->>>>>>> parent of 644c585 (Image module initiation)
+                                root: { 
+                                    height: '100%',
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0
+                                },
+                                wrapper: {
+                                    height: '100%'
+                                },
+                                fieldGroup: {
+                                    height: '100%',
+                                    background: 'transparent',
+                                    border: 'none',
+                                    selectors: {
+                                        ':after': {
+                                            border: 'none'
+                                        }
+                                    }
+                                },
+                                field: {
+                                    height: '100%',
+                                    padding: '10px',
+                                    resize: 'none',
+                                    overflow: 'auto'
+                                }
                             }}
                         />
                     </div>
                 </Stack.Item>
-
 
                 {/* Right Column - Settings */}
                 <Stack styles={rightPanelStyles} tokens={stackTokens}>
@@ -317,7 +340,16 @@ const AudioGen: React.FC = () => {
             </Stack>
 
             {/* Bottom Controls */}
-            <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
+            <Stack 
+                horizontal 
+                horizontalAlign="space-between" 
+                verticalAlign="center"
+                styles={{
+                    root: {
+                        marginTop: '20px'
+                    }
+                }}
+            >
                 <span className={styles.characterCount}>
                     {text.length} / 5,000 characters
                 </span>
