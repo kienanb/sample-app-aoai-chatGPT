@@ -216,7 +216,7 @@ const AudioGen: React.FC = () => {
                 horizontal 
                 styles={{ 
                     root: { 
-                        height: 'calc(100vh - 140px)', 
+                        height: 'calc(100vh - 319px)', 
                         width: '100%',
                         position: 'relative'
                     } 
@@ -331,7 +331,7 @@ const AudioGen: React.FC = () => {
                         />
 
                         <Toggle
-                            label="Speaker boost"
+                            label="Speaker Boost"
                             checked={speakerBoost}
                             onChange={(_, checked) => setSpeakerBoost(checked || false)}
                         />
@@ -340,9 +340,9 @@ const AudioGen: React.FC = () => {
             </Stack>
 
             {/* Bottom Controls */}
-            <Stack 
-                horizontal 
-                horizontalAlign="space-between" 
+            <Stack
+                horizontal
+                horizontalAlign="space-between"
                 verticalAlign="center"
                 styles={{
                     root: {
@@ -350,15 +350,24 @@ const AudioGen: React.FC = () => {
                     }
                 }}
             >
-                <span className={styles.characterCount}>
-                    {text.length} / 5,000 characters
-                </span>
-                <DefaultButton
-                    primary
-                    text={isGenerating ? 'Generating...' : 'Generate speech'}
-                    onClick={generateSpeech}
-                    disabled={isGenerating || !text || !selectedVoice || !selectedModel}
-                />
+                <Stack.Item>
+                    <span className={styles.characterCount}>
+                        {text.length} / 5,000 characters
+                    </span>
+                </Stack.Item>
+                <Stack.Item>
+                    <DefaultButton
+                        primary
+                        text={isGenerating ? 'Generating...' : 'Generate speech'}
+                        onClick={generateSpeech}
+                        disabled={isGenerating || !text || !selectedVoice || !selectedModel}
+                        styles={{
+                            root: {
+                                width: '320px'
+                            }
+                        }}
+                    />
+                </Stack.Item>
             </Stack>
 
             {/* Audio Player */}

@@ -35,6 +35,11 @@
     height: 100%;
 }
 
+.textContainer :global(.ms-TextField-fieldGroup:focus-within) {
+    border: none;
+    outline: none;
+}
+
 .textContainer :global(.ms-TextField-field) {
     height: 100% !important;
     min-height: 100% !important;
@@ -86,9 +91,17 @@
 
 .generatedImage {
     max-width: 100%;
-    max-height: calc(100vh - 140px);
+    max-height: 90%;
     border-radius: 8px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
     object-fit: contain;
+}
+
+.errorContainer {
+    padding: 20px;
+    text-align: center;
+    background-color: #fde7e9;
+    border-radius: 4px;
+    margin: 20px;
 }

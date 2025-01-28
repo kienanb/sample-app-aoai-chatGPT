@@ -178,8 +178,14 @@ async def generate_image():
 
         # Handle response
         if isinstance(result, dict) and "error" in result:
-            logging.error(f"Error generating image: {result['error']}")
-            return jsonify({"error": result['error']}), 500
+            error_message = result['error']
+            
+            # Return 400 for any content filter/moderation errors
+            return jsonify({
+                "error": "Content filtered",
+                "message": "Your prompt may have triggered content filters due to image rights or moderation filters. Please try again. If this still doesn't work try rephrasing your prompt to avoid potentially sensitive content.",
+                "type": "moderation"
+            }), 400
 
         # Parse the URL of the first image
         image_url = result.get("data", [{}])[0].get("url")
@@ -191,7 +197,11 @@ async def generate_image():
 
     except Exception as e:
         logging.exception("Unexpected error in image generation endpoint")
-        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+        return jsonify({
+            "error": "Generation failed",
+            "message": "An unexpected error occurred. Please try again.",
+            "type": "general"
+        }), 500
     
 @bp.route('/api/dalle/model', methods=['GET'])
 async def get_dalle_model():

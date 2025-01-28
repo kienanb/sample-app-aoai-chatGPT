@@ -32,6 +32,21 @@ export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, conv
     }
   };
 
+  const handlePaste = async (e: React.ClipboardEvent) => {
+    const items = e.clipboardData.items;
+    
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') !== -1) {
+        e.preventDefault(); // Prevent the default paste of the image
+        const blob = items[i].getAsFile();
+        
+        if (blob) {
+          await convertToBase64(blob);
+        }
+      }
+    }
+  };
+
   const convertToBase64 = async (file: Blob) => {
     try {
       const resizedBase64 = await resizeImage(file, 800, 800);
@@ -85,6 +100,7 @@ export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, conv
         value={question}
         onChange={onQuestionChange}
         onKeyDown={onEnterPress}
+        onPaste={handlePaste}
       />
       {!OYD_ENABLED && (
         <div className={styles.fileInputContainer}>
@@ -103,7 +119,23 @@ export const QuestionInput = ({ onSend, disabled, placeholder, clearOnSend, conv
             />
           </label>
         </div>)}
-      {base64Image && <img className={styles.uploadedImage} src={base64Image} alt="Uploaded Preview" />}
+        {base64Image && (
+          <div className={styles.imagePreviewIndicator}>
+            <img 
+              className={styles.previewThumbnail} 
+              src={base64Image} 
+              alt="Upload Preview" 
+            />
+            <FontIcon
+              className={styles.clearImage}
+              iconName="Cancel"
+              onClick={(e) => {
+                e.stopPropagation();
+                setBase64Image(null);
+              }}
+            />
+          </div>
+        )}
       <div
         className={styles.questionInputSendButtonContainer}
         role="button"

@@ -18,7 +18,8 @@ const ImageGen: React.FC = () => {
     const [image, setImage] = useState<string | null>(null); // Single image URL
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
     const [models, setModels] = useState<IDropdownOption[]>([]);
-    const [selectedModel, setSelectedModel] = useState<string | undefined>();
+    const [selectedModel, setSelectedModel] = useState(models[0]?.key);
+    const [error, setError] = useState<{ message: string; type: string } | null>(null);
 
     useEffect(() => {
         const fetchModel = async () => {
@@ -35,8 +36,16 @@ const ImageGen: React.FC = () => {
         fetchModel();
     }, []);
 
+    useEffect(() => {
+        // Ensure selectedModel is always set to the first option if models change
+        if (models.length > 0 && !models.some(model => model.key === selectedModel)) {
+            setSelectedModel(models[0].key);
+        }
+    }, [models]);
+
     const generateImages = async () => {
         setIsGenerating(true);
+        setError(null);
         try {
             const response = await fetch("/api/dalle/generate-images", {
                 method: "POST",
@@ -51,16 +60,29 @@ const ImageGen: React.FC = () => {
                     model: selectedModel,
                 }),                
             });
+            
             const result = await response.json();
+            
+            if (!response.ok) {
+                setError({
+                    message: result.message || "An error occurred",
+                    type: result.type || "general"
+                });
+                return;
+            }
+    
             if (result.image_url) {
-                setImage(result.image_url); // Update the single image URL
-            } else {
-                console.error("Error: No image URL returned");
+                setImage(result.image_url);
             }
         } catch (error) {
+            setError({
+                message: "Failed to generate image. Please try again.",
+                type: "general"
+            });
             console.error("Error generating image:", error);
+        } finally {
+            setIsGenerating(false);
         }
-        setIsGenerating(false);
     };
 
     return (
@@ -70,7 +92,7 @@ const ImageGen: React.FC = () => {
                 tokens={{ childrenGap: 20 }} 
                 styles={{ 
                     root: { 
-                        height: 'calc(100vh - 40px)',  // Account for container padding
+                        height: 'calc(100vh - 95px)',  // Account for container padding
                         position: 'relative'
                     } 
                 }}
@@ -176,13 +198,21 @@ const ImageGen: React.FC = () => {
                                     { key: "hd", text: "HD" },
                                 ]}
                             />
-                            <DefaultButton
-                                primary
-                                text="Generate Image"
-                                onClick={generateImages}
-                                disabled={!prompt || isGenerating}
-                            />
                         </Stack>
+                    </Stack.Item>
+                    <Stack.Item styles={{ root: { height: '40px' } }}>
+                        <DefaultButton
+                            primary
+                            text="Generate Image"
+                            onClick={generateImages}
+                            disabled={!prompt || isGenerating || !selectedModel}
+                            styles={{
+                                root: {
+                                    width: '100%',
+                                    height: '40px'
+                                }
+                            }}
+                        />
                     </Stack.Item>
                 </Stack>
     
@@ -199,15 +229,32 @@ const ImageGen: React.FC = () => {
                     >
                         {isGenerating ? (
                             <Spinner label="Generating image..." styles={{ root: { marginTop: "20px" } }} />
+                        ) : error ? (
+                            <Stack tokens={{ childrenGap: 10 }} className={styles.errorContainer}>
+                                <Label styles={{ root: { color: '#a4262c' } }}>
+                                    Please try adjusting your prompt and try again.
+                                </Label>
+                            </Stack>
                         ) : image ? (
                             <div className={styles.generatedImageWrapper}>
                                 <img src={image} alt="Generated" className={styles.generatedImage} />
                                 <DefaultButton
                                     href={image}
                                     download="generated_image.png"
-                                    text="Download"
+                                    iconProps={{
+                                        iconName: 'Download',
+                                        styles: { root: { color: 'inherit' } }
+                                    }}
                                     styles={{
-                                        root: { backgroundColor: "transparent", border: "none" },
+                                        root: { 
+                                            backgroundColor: 'transparent',
+                                            border: 'none',
+                                            minWidth: '32px',
+                                            padding: '10px'
+                                        },
+                                        rootHovered: {
+                                            backgroundColor: '#f3f2f1'
+                                        }
                                     }}
                                 />
                             </div>

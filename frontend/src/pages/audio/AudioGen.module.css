@@ -19,6 +19,7 @@ body {
     transform: translateY(0);
     transition: transform 0.3s ease-in-out;
     z-index: 100;
+    height: 76px; /* Fixed height for the player */
 }
 
 .audioControl {
@@ -70,6 +71,12 @@ body {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     resize: none; /* Prevent resizing */
     box-shadow: none; /* Remove inner shadows if any */
+}
+
+.container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .roundedContainer {
