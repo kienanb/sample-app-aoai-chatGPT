@@ -239,10 +239,8 @@ const ImageGen: React.FC = () => {
                             <div className={styles.generatedImageWrapper}>
                                 <img src={image} alt="Generated" className={styles.generatedImage} />
                                 <DefaultButton
-                                    href={image}
-                                    download="generated_image.png"
                                     iconProps={{
-                                        iconName: 'Download',
+                                        iconName: 'OpenInNewWindow',
                                         styles: { root: { color: 'inherit' } }
                                     }}
                                     styles={{
@@ -256,7 +254,17 @@ const ImageGen: React.FC = () => {
                                             backgroundColor: '#f3f2f1'
                                         }
                                     }}
+                                    onClick={() => {
+                                        const link = document.createElement("a");
+                                        link.href = image; // Use the signed Azure Blob URL directly
+                                        link.download = "generated_image.png"; // Suggest filename
+                                        link.target = "_blank"; // Open in new tab to avoid issues
+                                        document.body.appendChild(link);
+                                        link.click();
+                                        document.body.removeChild(link);
+                                    }}
                                 />
+
                             </div>
                         ) : (
                             <div className={styles.placeholder}>Your generated image will appear here</div>

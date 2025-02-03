@@ -13,7 +13,6 @@ import {
     SpinButton,
     Label
 } from '@fluentui/react'
-import { ArrowDownload20Regular } from '@fluentui/react-icons'
 
 import styles from './AudioGen.module.css'
 
@@ -34,17 +33,6 @@ interface Model {
     languages: Language[];
 }
 
-// Styles
-const textFieldStyles: Partial<ITextFieldStyles> = {
-    root: {
-        flex: 1
-    },
-    field: {
-        height: '100%',
-        minHeight: '600px'
-    }
-};
-
 const stackTokens: IStackTokens = {
     childrenGap: 15,
     padding: 10
@@ -52,13 +40,13 @@ const stackTokens: IStackTokens = {
 
 const rightPanelStyles: IStackStyles = {
     root: {
-        width: 320,
+        width: "340px",
         padding: '20px',
         backgroundColor: 'white',
         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
         borderRadius: '4px',
-        height: '600px',
-        overflowY: 'auto'
+        height: '100%',
+        overflow: 'auto'
     }
 };
 
