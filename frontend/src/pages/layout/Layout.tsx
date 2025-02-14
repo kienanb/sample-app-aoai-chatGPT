@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import { Dialog, Stack, TextField } from '@fluentui/react'
 import { CopyRegular } from '@fluentui/react-icons'
+import { useLocation } from 'react-router-dom';
 
 import { CosmosDBStatus } from '../../api'
 import Contoso from '../../assets/Contoso.svg'
@@ -21,6 +22,7 @@ const Layout = () => {
   const [logo, setLogo] = useState('');
   const appStateContext = useContext(AppStateContext);
   const ui = appStateContext?.state.frontendSettings?.ui;
+  const location = useLocation();
 
   const handleShareClick = () => {
     setIsSharePanelOpen(true);
@@ -90,7 +92,8 @@ const Layout = () => {
               </Link>
             </Stack>
             <Stack horizontal tokens={{ childrenGap: 4 }} className={styles.shareButtonContainer}>
-              {appStateContext?.state.isCosmosDBAvailable?.status !== CosmosDBStatus.NotConfigured &&
+              {location.pathname === "/chat" &&
+                appStateContext?.state.isCosmosDBAvailable?.status !== CosmosDBStatus.NotConfigured &&
                 ui?.show_chat_history_button !== false && (
                   <HistoryButton
                     onClick={handleHistoryClick}
@@ -100,7 +103,8 @@ const Layout = () => {
                         : showHistoryLabel
                     }
                   />
-                )}
+                )
+              }
               {ui?.show_share_button && (
                 <ShareButton onClick={handleShareClick} text={shareLabel} />
               )}

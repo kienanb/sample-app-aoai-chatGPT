@@ -252,14 +252,18 @@ export const ChatHistoryListItemCell: React.FC<ChatHistoryListItemCellProps> = (
               <Stack horizontal horizontalAlign="end">
                 <IconButton
                   className={styles.itemButton}
-                  iconProps={{ iconName: 'Delete' }}
+                  iconProps={{ iconName: 'Delete',
+                    styles: { root: { color: 'white' } } }}
                   title="Delete"
                   onClick={toggleDeleteDialog}
                   onKeyDown={e => (e.key === ' ' ? toggleDeleteDialog() : null)}
                 />
                 <IconButton
                   className={styles.itemButton}
-                  iconProps={{ iconName: 'Edit' }}
+                  iconProps={{
+                    iconName: 'Edit',
+                    styles: { root: { color: 'white' } }  // Force icon to be white
+                  }}
                   title="Edit"
                   onClick={onEdit}
                   onKeyDown={e => (e.key === ' ' ? onEdit() : null)}

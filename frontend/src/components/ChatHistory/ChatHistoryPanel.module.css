@@ -31,15 +31,29 @@
   align-items: center;
   width: 28px;
   height: 28px;
-  border: 1px solid #d1d1d1;
+  border: 1px solid #888888; /* Darker grey for subtle contrast */
   border-radius: 5px;
-  background-color: white;
+  background: radial-gradient(
+    109.81% 107.82% at 100.1% 90.19%,
+    #2c2f33 33.63%,   /* Dark slate */
+    #52565e 70.31%,   /* Medium grey */
+    #7a828e 100%      /* Lighter grey */
+  );
+  color: white;
   margin: auto 2.5px;
   cursor: pointer;
+  transition: background 0.3s ease-in-out, border 0.3s ease-in-out, transform 0.2s ease-in-out;
 }
 
 .itemButton:hover {
-  background-color: #e6e6e6;
+  background: linear-gradient(135deg, #2c2f33 0%, #52565e 51.04%, #7a828e 100%);
+  border-color: #b0b0b0; /* Slightly lighter border on hover */
+}
+
+.itemButton:active {
+  background: linear-gradient(135deg, #1e2023 0%, #3a3f46 51.04%, #626a75 100%);
+  border-color: #d1d1d1;
+  transform: scale(0.96); /* Slight press effect */
 }
 
 .chatGroup {
@@ -60,7 +74,7 @@
 
 .chatMonth {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: 5px;
   padding-left: 15px;
 }
@@ -70,6 +84,15 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.chatHistoryTitle {
+  align-self: center;
+  font-weight: 600;
+  font-size: 18px;
+  margin-right: auto;
+  padding-left: 20px;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 @media (max-width: 480px) {

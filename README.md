@@ -1,4 +1,6 @@
-# [Preview] Sample Chat App with AOAI
+# Bond GPT
+
+# Notes from Open Source framework
 
 This repo contains sample code for a simple chat webapp that integrates with Azure OpenAI. Note: some portions of the app use preview APIs.
 

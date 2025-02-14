@@ -1,5 +1,6 @@
 .shareButtonRoot {
   width: 86px;
+  font-weight: 300;
   height: 32px;
   border-radius: 4px;
   background: radial-gradient(109.81% 107.82% at 100.1% 90.19%, #bd0f7a 33.63%, #c32daa 70.31%, #dd8dd0 100%);
@@ -23,16 +24,30 @@
 }
 
 .historyButtonRoot {
-  width: 180px;
-  border: 1px solid #d1d1d1;
+  width: 200px;
+  font-weight: 300;
+  border-radius: 4px;
+  background: radial-gradient(
+    109.81% 107.82% at 100.1% 90.19%,
+    #2c2f33 33.63%,   /* Dark slate */
+    #52565e 70.31%,   /* Medium grey */
+    #7a828e 100%      /* Lighter grey */
+  );
+  color: white; /* Ensure text is readable */
+  padding: 5px 12px;
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
 }
 
 .historyButtonRoot:hover {
-  border: 1px solid #d1d1d1;
+  background: linear-gradient(135deg, #2c2f33 0%, #52565e 51.04%, #7a828e 100%);
+  color: white; 
 }
 
 .historyButtonRoot:active {
-  border: 1px solid #d1d1d1;
+  border: 1px solid #b0b0b0;  /* Slightly lighter grey border for contrast */
+  background: linear-gradient(135deg, #1e2023 0%, #3a3f46 51.04%, #626a75 100%);
+  transform: scale(0.98);  /* Slight press-down effect */
+  color: white; 
 }
 
 @media (max-width: 480px) {

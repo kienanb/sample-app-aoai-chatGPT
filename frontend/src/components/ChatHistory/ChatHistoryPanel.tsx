@@ -19,6 +19,7 @@ import {
 } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 
+
 import { ChatHistoryLoadingState, historyDeleteAll } from '../../api'
 import { AppStateContext } from '../../state/AppProvider'
 
@@ -105,20 +106,11 @@ export function ChatHistoryPanel(_props: ChatHistoryPanelProps) {
   return (
     <section className={styles.container} data-is-scrollable aria-label={'chat history panel'}>
       <Stack horizontal horizontalAlign="space-between" verticalAlign="center" wrap aria-label="chat history header">
-        <StackItem>
-          <Text
-            role="heading"
-            aria-level={2}
-            style={{
-              alignSelf: 'center',
-              fontWeight: '600',
-              fontSize: '18px',
-              marginRight: 'auto',
-              paddingLeft: '20px'
-            }}>
-            Chat history
-          </Text>
-        </StackItem>
+      <StackItem>
+        <Text role="heading" aria-level={2} className={styles.chatHistoryTitle}>
+          Chat History
+        </Text>
+      </StackItem>
         <Stack verticalAlign="start">
           <Stack horizontal styles={commandBarButtonStyle}>
             <CommandBarButton

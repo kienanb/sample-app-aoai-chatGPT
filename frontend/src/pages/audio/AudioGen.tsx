@@ -11,16 +11,24 @@ import {
     IStackStyles,
     ITextFieldStyles,
     SpinButton,
-    Label
+    Label,
+    TooltipHost,
+    DirectionalHint,
+    Icon
 } from '@fluentui/react'
 
 import styles from './AudioGen.module.css'
+import TooltipIcon from '../../components/common/TooltipIcon'
 
 // Types
 interface Voice {
     voice_id: string;
     name: string;
+    category?: string; // Optional in case some voices lack it
+    labels?: Record<string, string>; // Dictionary for label values
+    description?: string; // Optional
 }
+
 
 interface Language {
     language_id: string;
@@ -30,6 +38,7 @@ interface Language {
 interface Model {
     model_id: string;
     name: string;
+    description: string;
     languages: Language[];
 }
 
@@ -102,7 +111,6 @@ const AudioPlayer: React.FC<{ audioUrl: string; onClose: () => void }> = ({ audi
     );
 };
 
-
 const AudioGen: React.FC = () => {
     const [text, setText] = useState('');
     const [voices, setVoices] = useState<Voice[]>([]);
@@ -112,7 +120,7 @@ const AudioGen: React.FC = () => {
     const [selectedLanguage, setSelectedLanguage] = useState<string>('');
     const [stability, setStability] = useState<number>(0.5);
     const [similarity, setSimilarity] = useState<number>(0.75);
-    const [styleExaggeration, setStyleExaggeration] = useState<number>(0.3);
+    const [styleExaggeration, setStyleExaggeration] = useState<number>(0.0);
     const [speakerBoost, setSpeakerBoost] = useState<boolean>(true);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
     const [audioUrl, setAudioUrl] = useState<string>('');
@@ -127,13 +135,18 @@ const AudioGen: React.FC = () => {
         try {
             const response = await fetch('/api/voices');
             const data = await response.json();
-            // Extract the voices array from the response
-            setVoices(data.voices || []);
+    
+            setVoices(data.voices.map((voice: Voice) => ({
+                ...voice, 
+                category: voice.category || '', // Default to empty string
+                labels: voice.labels || {}, // Default to empty object
+                description: voice.description || '' // Default to empty string
+            })));
         } catch (error) {
             console.error('Error fetching voices:', error);
             setVoices([]);
         }
-    };
+    };    
 
     const fetchModels = async () => {
         try {
@@ -255,15 +268,48 @@ const AudioGen: React.FC = () => {
 
                 {/* Right Column - Settings */}
                 <Stack styles={rightPanelStyles} tokens={stackTokens}>
+                    <Stack horizontal verticalAlign="center">
+                        <Label>Model</Label>
+                        <TooltipIcon content="Select a model for voice generation. Hover over each option for more details." />
+                    </Stack>
+
                     <Dropdown
-                        label="Model"
+                        label={undefined} // Hide default label since we manually created one
                         selectedKey={selectedModel}
                         onChange={handleModelChange}
                         options={models.map(model => ({
                             key: model.model_id,
-                            text: model.name
+                            text: model.name,
+                            data: model // Store full model object for tooltip rendering
                         }))}
                         placeholder="Select Model"
+                        onRenderOption={(option) => {
+                            if (!option?.data) return <span>{option?.text}</span>;
+                        
+                            const voice = option.data as Voice;
+                            const { category, labels, description } = voice;
+                        
+                            // Build tooltip content dynamically, ensuring non-null values are displayed
+                            const tooltipParts = [
+                                category ? `<strong>${category.toUpperCase()}</strong>` : null, // Bold uppercase category
+                                labels && Object.values(labels).length ? `<em>${Object.values(labels).join(', ')}</em>` : null, // Italicized labels
+                                description ? `<span style="font-size: 12px">${description}</span>` : null // Smaller font description
+                            ].filter(Boolean); // Remove null values
+                        
+                            // Ensure tooltip always has content
+                            const tooltipContent = tooltipParts.length > 0 
+                                ? tooltipParts.join('<br/>') 
+                                : 'No additional details available'; // Fallback text if all fields are null
+                        
+                            return (
+                                <TooltipHost
+                                    content={<span dangerouslySetInnerHTML={{ __html: tooltipContent }} />}
+                                    directionalHint={DirectionalHint.rightCenter}
+                                >
+                                    <span>{option.text}</span>
+                                </TooltipHost>
+                            );
+                        }}
                     />
 
                     {selectedModel && showLanguageSelector && (
@@ -279,19 +325,51 @@ const AudioGen: React.FC = () => {
                         />
                     )}
 
+                    <Stack horizontal verticalAlign="center">
+                        <Label>Voice</Label>
+                        <TooltipIcon content="Select a voice model. Voice models dictate the style of the voice. Hover over each option for more details." />
+                    </Stack>
+
                     <Dropdown
-                        label="Voice"
+                        label={undefined} // Hide the default label since we manually created one
                         selectedKey={selectedVoice}
                         onChange={(_, option) => option && setSelectedVoice(option.key as string)}
-                        options={voices.map(voice => ({
+                        options={voices.map((voice) => ({
                             key: voice.voice_id,
-                            text: voice.name
+                            text: voice.name,
+                            data: voice as Voice
                         }))}
                         placeholder="Select Voice"
+                        onRenderOption={(option) => {
+                            if (!option?.data) return <span>{option?.text}</span>;
+                        
+                            const voice = option.data as Voice;
+                            const { category, labels, description } = voice;
+                        
+                            const tooltipContent = [
+                                category ? `<strong>${category.toUpperCase()}</strong>` : null, // Bold
+                                labels && Object.values(labels).length ? `<em>${Object.values(labels).join(', ')}</em>` : null, // Italic
+                                description ? `<span style="font-size: 12px">${description}</span>` : null // Smaller text
+                            ].filter(Boolean).join('<br/>'); // Ensure valid formatting
+                        
+                            return (
+                                <TooltipHost
+                                    content={<span dangerouslySetInnerHTML={{ __html: tooltipContent }} />} // Renders formatted HTML
+                                    directionalHint={DirectionalHint.rightCenter}
+                                >
+                                    <span>{option.text}</span>
+                                </TooltipHost>
+                            );
+                        }}
                     />
 
+
                     <Stack tokens={{ childrenGap: 10 }}>
-                        <Label>Stability ({(stability * 100).toFixed(0)}%)</Label>
+                        {/* Stability */}
+                        <Stack horizontal verticalAlign="center">
+                            <Label>Stability</Label>
+                            <TooltipIcon content="The stability slider determines how stable the voice is and the randomness between each generation. Lowering this slider introduces a broader emotional range for the voice. Setting the slider too low may result in odd performances that are overly random and cause the character to speak too quickly. On the other hand, setting it too high can lead to a monotonous voice with limited emotion." />
+                        </Stack>
                         <Slider
                             min={0}
                             max={1}
@@ -300,7 +378,11 @@ const AudioGen: React.FC = () => {
                             onChange={value => setStability(value)}
                         />
 
-                        <Label>Similarity ({(similarity * 100).toFixed(0)}%)</Label>
+                        {/* Similarity */}
+                        <Stack horizontal verticalAlign="center">
+                            <Label>Similarity</Label>
+                            <TooltipIcon content="The similarity slider dictates how closely the AI should adhere to the original voice when attempting to replicate it." />
+                        </Stack>
                         <Slider
                             min={0}
                             max={1}
@@ -309,7 +391,11 @@ const AudioGen: React.FC = () => {
                             onChange={value => setSimilarity(value)}
                         />
 
-                        <Label>Style Exaggeration ({(styleExaggeration * 100).toFixed(0)}%)</Label>
+                        {/* Style Exaggeration */}
+                        <Stack horizontal verticalAlign="center">
+                            <Label>Style Exaggeration</Label>
+                            <TooltipIcon content="The style exaggeration slider attempts to amplify the style of the original speaker. It’s important to note that using this setting has shown to make the model slightly less stable, as it strives to emphasize and imitate the style of the original voice. For most use cases, it is suggested to set the slider to 0." />
+                        </Stack>
                         <Slider
                             min={0}
                             max={1}
@@ -318,8 +404,13 @@ const AudioGen: React.FC = () => {
                             onChange={value => setStyleExaggeration(value)}
                         />
 
+                        {/* Speaker Boost */}
+                        <Stack horizontal verticalAlign="center">
+                            <Label>Speaker Boost</Label>
+                            <TooltipIcon content="This setting boosts the similarity to the original speaker. However, using this setting requires a slightly higher computational load, which in turn increases latency. The differences introduced by this setting are generally rather subtle." />
+                        </Stack>
                         <Toggle
-                            label="Speaker Boost"
+                            label=""
                             checked={speakerBoost}
                             onChange={(_, checked) => setSpeakerBoost(checked || false)}
                         />
@@ -351,7 +442,7 @@ const AudioGen: React.FC = () => {
                         disabled={isGenerating || !text || !selectedVoice || !selectedModel}
                         styles={{
                             root: {
-                                width: '320px'
+                                width: '340px'
                             }
                         }}
                     />

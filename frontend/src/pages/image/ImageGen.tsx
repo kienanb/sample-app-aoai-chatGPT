@@ -185,8 +185,8 @@ const ImageGen: React.FC = () => {
                                 selectedKey={style}
                                 onChange={(_, option) => option && setStyle(option.key as string)}
                                 options={[
-                                    { key: "vivid", text: "Vivid" },
-                                    { key: "natural", text: "Natural" },
+                                    { key: "vivid", text: "Vivid", title: "Vivid causes the model to lean towards generating hyper-real and dramatic images." },
+                                    { key: "natural", text: "Natural", title: "Natural causes the model to produce more natural, less hyper-real looking images." },
                                 ]}
                             />
                             <Dropdown
@@ -194,8 +194,8 @@ const ImageGen: React.FC = () => {
                                 selectedKey={quality}
                                 onChange={(_, option) => option && setQuality(option.key as string)}
                                 options={[
-                                    { key: "standard", text: "Standard" },
-                                    { key: "hd", text: "HD" },
+                                    { key: "standard", text: "Standard", title: "Standard creates images with less fine details and less consistency across the image. However, it is cheaper to run."},
+                                    { key: "hd", text: "HD", title: "HD creates images with finer details and greater consistency across the image." },
                                 ]}
                             />
                         </Stack>
